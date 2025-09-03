@@ -19,6 +19,9 @@ pip install -r requirements.txt
 ## Run the project
 uvicorn main:app --reload
 
+## Migrate table
+python app\core\db.py
+
 ## Project Structure
 ```
 app/
