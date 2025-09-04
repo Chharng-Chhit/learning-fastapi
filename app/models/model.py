@@ -16,3 +16,11 @@ class Hero(SQLModel, table=True):
     secret_name: str
     email: str = Field(index=True, unique=True)
     books: List[Book] = Relationship(back_populates="hero")
+
+class Animal(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    name: str = Field(index=True)
+    category: str = Field(index=True)
+    placeOfBirth: int = Field(default=0, index=True)
+    # hero_id: int = Field(foreign_key="owner.id")
+    # Hero: Optional["Hero"] = Relationship(back_populates="animals")
