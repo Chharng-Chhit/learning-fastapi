@@ -9,13 +9,14 @@ class BookUtility:
     def __init__(self):
         self.books: List[Dict] = []
 
-    def add_book(self, title: str, desc: str) -> Dict:
+    def add_book(db: Session, book: BookCreate) -> Dict:
         book = {
-            "id": len(self.books) + 1,
-            "title": title,
-            "desc": desc
+            "title": book.title,
+            "desc": book.desc
         }
-        self.books.append(book)
+        db.add(book)
+        db.commit()
+        db.refresh(book)
         return book
 
     def get_book(self, book_id: int) -> Optional[Dict]:

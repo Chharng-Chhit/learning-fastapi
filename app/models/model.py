@@ -2,10 +2,11 @@ from typing import Optional, List
 from sqlmodel import Field, SQLModel, Relationship
 
 class Book(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    title: str = Field(index=True)
+    id: int = Field(default=None, primary_key=True)
+    title: str
     desc: Optional[str] = Field(default=None)
-    hero_id: int = Field(foreign_key="hero.id")
+    hero_id: int | None = Field(default=None, foreign_key="hero.id")  # Make nullable
+
     hero: Optional["Hero"] = Relationship(back_populates="books")
 
 class Hero(SQLModel, table=True):

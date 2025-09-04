@@ -13,7 +13,6 @@ def create_hero(hero: HeroCreate, session: Session = Depends(get_session)):
 
 @router.get("/", response_model=list[HeroRead])
 def read_heroes(session: Session = Depends(get_session)):
-    print('hello')
     heroes = HeroUtility.get_heroes(session)
     return heroes
 
@@ -23,3 +22,17 @@ def read_hero(hero_id: int, session: Session = Depends(get_session)):
     if not hero:
         raise HTTPException(status_code=404, detail="Hero not found")
     return hero
+
+@router.put("/{hero_id}", response_model=HeroRead)
+def update_hero(hero_id: int, hero: HeroCreate, session: Session = Depends(get_session)):
+    updated_hero = HeroUtility.update_hero(session, hero_id, hero)
+    if not updated_hero:
+        raise HTTPException(status_code=404, detail="Hero not found")
+    return updated_hero
+
+@router.delete("/{hero_id}")
+def delete_hero(hero_id: int, session: Session = Depends(get_session)):
+    deleted_hero = HeroUtility.delete_hero(session, hero_id)
+    if not deleted_hero:
+        raise HTTPException(status_code=404, detail="Hero not found")
+    return deleted_hero 
