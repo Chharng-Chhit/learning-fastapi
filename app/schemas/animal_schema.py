@@ -14,7 +14,7 @@ class AnimalRead(AnimalBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
         
 class AnimalUpdate(SQLModel):
     name: Optional[str] = None
