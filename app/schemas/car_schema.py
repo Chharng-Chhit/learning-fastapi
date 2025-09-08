@@ -17,6 +17,10 @@ class CarRead(CarBase):
 
     class Config:
         from_attributes = True
+
+class CarUpdate(CarCreate):
+    pass
+
         
 # class CarUpdate(CarBase):
 #     name: Optional[str] = None
