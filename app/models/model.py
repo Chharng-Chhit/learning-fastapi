@@ -1,26 +1,23 @@
-from typing import Optional, List
-from sqlmodel import Field, SQLModel, Relationship
+from typing import Optional, List, TYPE_CHECKING
+from sqlmodel import SQLModel, Field, Relationship
 
-class Book(SQLModel, table=True):
-    id: int = Field(default=None, primary_key=True)
-    title: str
-    desc: Optional[str] = Field(default=None)
-    hero_id: int | None = Field(default=None, foreign_key="hero.id")  # Make nullable
+if TYPE_CHECKING:
+    from app.models.model import Animal, User  # or wherever Animal is defined
 
-    hero: Optional["Hero"] = Relationship(back_populates="books")
 
-class Hero(SQLModel, table=True):
+class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    name: str = Field(index=True)
-    age: int = Field(default=0, index=True)
+    name: str
+    email: str
+    age: int
     secret_name: str
-    email: str = Field(index=True, unique=True)
-    books: List[Book] = Relationship(back_populates="hero")
+    animals: List["Animal"] = Relationship(back_populates="owner")
+
 
 class Animal(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    name: str = Field(index=True)
-    category: str = Field(index=True)
-    placeOfBirth: int = Field(default=0, index=True)
-    # hero_id: int = Field(foreign_key="owner.id")
-    # Hero: Optional["Hero"] = Relationship(back_populates="animals")
+    name: str
+    # category: str
+    place_of_birth: str
+    owner_id: Optional[int] = Field(default=None, foreign_key="user.id")
+    owner: Optional["User"] = Relationship(back_populates="animals")

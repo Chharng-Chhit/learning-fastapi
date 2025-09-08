@@ -1,3 +1,4 @@
+from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 from app.schemas.animal_schema import AnimalCreate, AnimalRead
@@ -10,12 +11,14 @@ def create_animal_endpoint(animal: AnimalCreate, session: Session = Depends(get_
     db_animal = AnimalUtility.add_animal(session, animal)
     return db_animal
 
-@router.get("/")
+@router.get("/"
+            , response_model=List[AnimalRead]
+            )
 def read_animals(session: Session = Depends(get_session)):
     animals = AnimalUtility.get_all_animals(session)
     return animals
 
-@router.get("/{animal_id}")
+@router.get("/{animal_id}", response_model=AnimalRead)
 def read_animal(animal_id: int, session: Session = Depends(get_session)):
     animal = AnimalUtility.get_animal(session, animal_id)
     if not animal:

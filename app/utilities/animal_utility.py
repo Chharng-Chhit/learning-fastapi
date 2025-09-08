@@ -1,5 +1,6 @@
 from typing import List, Optional
-from sqlalchemy.orm import Session
+from sqlmodel import Session, select
+from sqlalchemy.orm import Session, selectinload
 
 from app.models.model import Animal
 from app.schemas.animal_schema import AnimalCreate
@@ -16,8 +17,6 @@ class AnimalUtility:
         return db_animal
     @staticmethod
     def get_all_animals(db: Session) -> List[Animal]:
-        return db.query(Animal).all()
-    @staticmethod
-    def get_animal(db: Session, animal_id: int) -> Optional[Animal]:
-        return db.query(Animal).filter(Animal.id == animal_id).first()
-    
+        stmt = select(Animal)
+        return db.exec(stmt).all()
+
